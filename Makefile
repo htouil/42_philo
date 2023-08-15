@@ -6,20 +6,23 @@
 #    By: htouil <htouil@student.1337.ma>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/10 20:44:55 by htouil            #+#    #+#              #
-#    Updated: 2023/08/11 16:02:57 by htouil           ###   ########.fr        #
+#    Updated: 2023/08/15 15:36:15 by htouil           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	= philo
 
 SRCS	= philo.c philo_utils.c \
-			libft/ft_bzero.c libft/ft_atoi.c
+			libft/ft_bzero.c libft/ft_atoi.c \
+			ft_printf/ft_printf.c ft_printf/ft_putchar.c ft_printf/ft_putstr.c \
+			ft_printf/ft_putnbr.c ft_printf/ft_putnbruns.c ft_printf/ft_puthexlow.c \
+			ft_printf/ft_puthexhigh.c ft_printf/ft_putvoid.c
 
 OBJS	= $(SRCS:.c=.o)
 
 CC		= cc
 
-FLAGS	= -Wall -Wextra -Werror
+FLAGS	= -Wall -Wextra -Werror -fsanitize=thread -g -O2 -pthread
 
 all: $(NAME)
 

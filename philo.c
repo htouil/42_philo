@@ -6,7 +6,7 @@
 /*   By: htouil <htouil@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 20:44:09 by htouil            #+#    #+#             */
-/*   Updated: 2023/08/13 15:32:22 by htouil           ###   ########.fr       */
+/*   Updated: 2023/08/15 14:05:47 by htouil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	set_up_table(t_args *args, t_philo *philo)
 {
 	int	i;
 
+	pthread_mutex_init(&philo->msg, NULL);
 	i = 0;
 	while (i < args->n_philos)
 	{
@@ -49,10 +50,10 @@ void	set_up_table(t_args *args, t_philo *philo)
 
 int	main(int ac, char **av)
 {
-	t_args				args;
-	t_philo				*philo;
-	unsigned long long	begin;
-	int					i;
+	t_args		args;
+	t_philo		*philo;
+	long long	begin;
+	int			i;
 
 	if (ac < 5 || ac > 6)
 		return (1);
@@ -61,15 +62,23 @@ int	main(int ac, char **av)
 	if (!philo)
 		return (1);
 	set_up_table(&args, philo);
-	begin = get_current_time();
+	begin = get_time();
 	i = 0;
 	while (i < args.n_philos)
 	{
 		pthread_create(&philo[i].philo, NULL, routine, &philo[i]);
 		philo[i].st = begin;
 		philo[i].lt = begin;
-		usleep(33);
 		i++;
+		usleep(33);
 	}
+	monitoring(&args, philo);
+	// i = 0;
+	// while (i < args.n_philos)
+	// {
+	// 	pthread_join(philo[i].philo, NULL);
+	// 	i++;
+	// }
+	// pthread_mutex_lock(msg);
 	free(philo);
 }
