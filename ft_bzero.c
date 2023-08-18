@@ -6,11 +6,11 @@
 /*   By: htouil <htouil@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 20:44:05 by htouil            #+#    #+#             */
-/*   Updated: 2023/08/10 20:56:15 by htouil           ###   ########.fr       */
+/*   Updated: 2023/08/18 20:22:19 by htouil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../philo.h"
+#include "philo.h"
 
 void	*ft_memset(void *ptr, int c, size_t n)
 {

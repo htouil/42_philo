@@ -6,7 +6,7 @@
 /*   By: htouil <htouil@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 15:56:16 by htouil            #+#    #+#             */
-/*   Updated: 2023/08/15 14:02:15 by htouil           ###   ########.fr       */
+/*   Updated: 2023/08/18 23:51:29 by htouil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ void	monitoring(t_args *args, t_philo *philo)
 		i = 0;
 		while (i < args->n_philos)
 		{
-			if (get_time() - philo[i].lt >= args->t_todie)
+			if (philo[i].count_meals <= args->n_ofmeals
+				&& get_time() - philo[i].lt >= args->t_todie)
 			{
 				printf("%lld %d died\n", get_time() - philo->st, philo->id);
 				philo->args.kill = true;
@@ -93,14 +94,17 @@ void	*routine(void *ptr)
 	while (1)
 	{
 		printf("%lld %d is thinking\n", get_time() - ph->st, ph->id);
+		
 		pthread_mutex_lock(&ph->fst_fork);
 		printf("%lld %d has taken a fork\n", get_time() - ph->st, ph->id);
 		pthread_mutex_lock(ph->scd_fork);
 		printf("%lld %d has taken a fork\n", get_time() - ph->st, ph->id);
+		
 		printf("%lld %d is eating\n", get_time() - ph->st, ph->id);
 		ph->lt = get_time();
 		ph->count_meals++;
 		custom_usleep(ph->args.t_toeat);
+		
 		pthread_mutex_unlock(&ph->fst_fork);
 		pthread_mutex_unlock(ph->scd_fork);
 		printf("%lld %d is sleeping\n", get_time() - ph->st, ph->id);

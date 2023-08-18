@@ -6,7 +6,7 @@
 /*   By: htouil <htouil@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 20:44:09 by htouil            #+#    #+#             */
-/*   Updated: 2023/08/15 14:05:47 by htouil           ###   ########.fr       */
+/*   Updated: 2023/08/18 23:33:48 by htouil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	init_args(char **av, t_args *args)
 	args->t_toeat = ft_atoi(av[3]);
 	args->t_tosleep = ft_atoi(av[4]);
 	args->n_ofmeals = -1;
+	args->kill = false;
 	if (av[5])
 		args->n_ofmeals = ft_atoi(av[5]);
 	if (args->n_philos <= 0 || args->n_philos > 200
@@ -31,7 +32,6 @@ void	set_up_table(t_args *args, t_philo *philo)
 {
 	int	i;
 
-	pthread_mutex_init(&philo->msg, NULL);
 	i = 0;
 	while (i < args->n_philos)
 	{
@@ -72,13 +72,18 @@ int	main(int ac, char **av)
 		i++;
 		usleep(33);
 	}
+	i = 0;
+	while (i < args.n_philos)
+	{
+		pthread_join(philo[i].philo, NULL);
+		i++;
+	}
 	monitoring(&args, philo);
-	// i = 0;
-	// while (i < args.n_philos)
-	// {
-	// 	pthread_join(philo[i].philo, NULL);
-	// 	i++;
-	// }
-	// pthread_mutex_lock(msg);
+	i = 0;
+	while (i < args.n_philos)
+	{
+		printf("philo %d : %d\n", philo[i].id, philo[i].count_meals);
+		i++;
+	}
 	free(philo);
 }

@@ -6,11 +6,11 @@
 /*   By: htouil <htouil@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 20:57:03 by htouil            #+#    #+#             */
-/*   Updated: 2023/08/10 22:52:26 by htouil           ###   ########.fr       */
+/*   Updated: 2023/08/18 20:22:23 by htouil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../philo.h"
+#include "philo.h"
 
 int	ft_atoi(char *str)
 {

@@ -6,14 +6,13 @@
 /*   By: htouil <htouil@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 16:49:08 by htouil            #+#    #+#             */
-/*   Updated: 2023/08/15 10:33:40 by htouil           ###   ########.fr       */
+/*   Updated: 2023/08/18 20:49:08 by htouil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
-# include "ft_printf/ft_printf.h"
 # include <stdio.h>
 # include <string.h>
 # include <stdlib.h>
@@ -24,13 +23,14 @@
 
 typedef struct s_args
 {
-	int		n_philos;
-	int		t_todie;
-	int		t_toeat;
-	int		t_tosleep;
-	int		n_ofmeals;
-	int		full_philos;
-	bool	kill;
+	int				n_philos;
+	int				t_todie;
+	int				t_toeat;
+	int				t_tosleep;
+	int				n_ofmeals;
+	int				full_philos;
+	bool			kill;
+	pthread_mutex_t	msg;
 }		t_args;
 
 typedef struct s_philo
@@ -40,7 +40,6 @@ typedef struct s_philo
 	pthread_t		philo;
 	pthread_mutex_t	fst_fork;
 	pthread_mutex_t	*scd_fork;
-	pthread_mutex_t	msg;
 	long long		st;
 	long long		lt;
 	t_args			args;
