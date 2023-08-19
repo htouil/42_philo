@@ -6,7 +6,7 @@
 /*   By: htouil <htouil@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 20:44:09 by htouil            #+#    #+#             */
-/*   Updated: 2023/08/18 23:33:48 by htouil           ###   ########.fr       */
+/*   Updated: 2023/08/19 17:17:22 by htouil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	set_up_table(t_args *args, t_philo *philo)
 	int	i;
 
 	i = 0;
+	pthread_mutex_init(&args->msg, NULL);
 	while (i < args->n_philos)
 	{
 		philo[i].id = i + 1;
@@ -85,5 +86,6 @@ int	main(int ac, char **av)
 		printf("philo %d : %d\n", philo[i].id, philo[i].count_meals);
 		i++;
 	}
+	printf("full philos : %d\n", args.full_philos);
 	free(philo);
 }
