@@ -6,7 +6,7 @@
 /*   By: htouil <htouil@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 16:49:08 by htouil            #+#    #+#             */
-/*   Updated: 2023/08/18 20:49:08 by htouil           ###   ########.fr       */
+/*   Updated: 2023/08/21 17:40:40 by htouil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,9 @@ typedef struct s_args
 	int				t_tosleep;
 	int				n_ofmeals;
 	int				full_philos;
-	bool			kill;
+	int				kill;
+	pthread_mutex_t	satiation;
+	pthread_mutex_t	time;
 	pthread_mutex_t	msg;
 }		t_args;
 

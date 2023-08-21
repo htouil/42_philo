@@ -6,7 +6,7 @@
 /*   By: htouil <htouil@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 20:44:09 by htouil            #+#    #+#             */
-/*   Updated: 2023/08/19 17:17:22 by htouil           ###   ########.fr       */
+/*   Updated: 2023/08/21 17:40:55 by htouil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	init_args(char **av, t_args *args)
 	args->t_toeat = ft_atoi(av[3]);
 	args->t_tosleep = ft_atoi(av[4]);
 	args->n_ofmeals = -1;
-	args->kill = false;
+	args->kill = 0;
 	if (av[5])
 		args->n_ofmeals = ft_atoi(av[5]);
 	if (args->n_philos <= 0 || args->n_philos > 200
@@ -34,6 +34,8 @@ void	set_up_table(t_args *args, t_philo *philo)
 
 	i = 0;
 	pthread_mutex_init(&args->msg, NULL);
+	pthread_mutex_init(&args->time, NULL);
+	pthread_mutex_init(&args->satiation, NULL);
 	while (i < args->n_philos)
 	{
 		philo[i].id = i + 1;
@@ -68,8 +70,10 @@ int	main(int ac, char **av)
 	while (i < args.n_philos)
 	{
 		pthread_create(&philo[i].philo, NULL, routine, &philo[i]);
+		pthread_mutex_lock(&args.time);
 		philo[i].st = begin;
 		philo[i].lt = begin;
+		pthread_mutex_unlock(&args.time);
 		i++;
 		usleep(33);
 	}
@@ -80,12 +84,5 @@ int	main(int ac, char **av)
 		i++;
 	}
 	monitoring(&args, philo);
-	i = 0;
-	while (i < args.n_philos)
-	{
-		printf("philo %d : %d\n", philo[i].id, philo[i].count_meals);
-		i++;
-	}
-	printf("full philos : %d\n", args.full_philos);
 	free(philo);
 }
