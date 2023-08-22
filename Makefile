@@ -6,7 +6,7 @@
 #    By: htouil <htouil@student.1337.ma>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/10 20:44:55 by htouil            #+#    #+#              #
-#    Updated: 2023/08/21 17:38:29 by htouil           ###   ########.fr        #
+#    Updated: 2023/08/22 19:37:33 by htouil           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ OBJS	= $(SRCS:.c=.o)
 
 CC		= cc
 
-FLAGS	= -Wall -Wextra -Werror -fsanitize=thread -g -pthread
+FLAGS	= -Wall -Wextra -Werror #-fsanitize=thread -g -pthread
 
 all: $(NAME)
 

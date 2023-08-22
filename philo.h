@@ -6,7 +6,7 @@
 /*   By: htouil <htouil@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 16:49:08 by htouil            #+#    #+#             */
-/*   Updated: 2023/08/21 17:40:40 by htouil           ###   ########.fr       */
+/*   Updated: 2023/08/22 20:36:34 by htouil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ typedef struct s_philo
 	pthread_mutex_t	*scd_fork;
 	long long		st;
 	long long		lt;
-	t_args			args;
+	t_args			*args;
 }		t_philo;
 
 //libft functions:
