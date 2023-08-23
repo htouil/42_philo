@@ -6,7 +6,7 @@
 /*   By: htouil <htouil@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 20:44:09 by htouil            #+#    #+#             */
-/*   Updated: 2023/08/22 21:03:41 by htouil           ###   ########.fr       */
+/*   Updated: 2023/08/23 16:51:04 by htouil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,22 +33,24 @@ void	init_args(int ac, char **av, t_args *args)
 	args->t_tosleep = ft_atoi(av[4]);
 	args->n_ofmeals = -1;
 	args->kill = 0;
-	// args.full_philos = 0;
+	// args->full_philos = 0;
 	if (av[5])
 		args->n_ofmeals = ft_atoi(av[5]);
 	if (args->n_philos <= 0 || args->n_philos > 200
 		|| args->t_todie < 60 || args->t_toeat < 60
 		|| args->t_tosleep < 60 || args->n_ofmeals < -1 || args->n_ofmeals == 0)
 		exit(1);
+	printf("nbr of meals : %d\n", args->n_ofmeals);
 }
 
 void	set_up_table(t_args *args, t_philo *philo)
 {
 	int	i;
 
-	pthread_mutex_init(&args->msg, NULL);
-	pthread_mutex_init(&args->time, NULL);
-	pthread_mutex_init(&args->satiation, NULL);
+	// pthread_mutex_init(&args->msg, NULL);
+	// pthread_mutex_init(&args->time, NULL);
+	// pthread_mutex_init(&args->satiation, NULL);
+	pthread_mutex_init(&args->var, NULL);
 	i = 0;
 	while (i < args->n_philos)
 	{
@@ -86,7 +88,9 @@ int	main(int ac, char **av)
 		pthread_create(&philo[i].philo, NULL, routine, &philo[i]);
 		// pthread_mutex_lock(&args.time);
 		philo[i].st = begin;
+		pthread_mutex_lock(&args.var);
 		philo[i].lt = begin;
+		pthread_mutex_unlock(&args.var);
 		// pthread_mutex_unlock(&args.time);
 		i++;
 		usleep(33);

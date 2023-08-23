@@ -6,7 +6,7 @@
 /*   By: htouil <htouil@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 15:56:16 by htouil            #+#    #+#             */
-/*   Updated: 2023/08/22 20:38:15 by htouil           ###   ########.fr       */
+/*   Updated: 2023/08/23 16:50:29 by htouil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,96 +43,73 @@ void	monitoring(t_args *args, t_philo *philo)
 		i = 0;
 		while (i < args->n_philos)
 		{
-			// pthread_mutex_lock(&philo.args.time);
+			// pthread_mutex_lock(&philo->args->var);
 			time = get_time() - philo[i].lt;
-			// pthread_mutex_unlock(&philo.args.time);
+			// pthread_mutex_unlock(&philo->args->var);
 			if (time >= args->t_todie)
 			{
-				// pthread_mutex_lock(&philo.args.msg);
-				// pthread_mutex_unlock(&philo.args.msg);
-				// pthread_mutex_lock(&philo.args.msg);
-				printf("%lld %d died\n", get_time() - philo->st, philo->id);
+				// pthread_mutex_lock(&philo->args->var);
 				philo->args->kill = 1;
-				// pthread_mutex_unlock(&philo.args.msg);
+				printf("%lld %d died\n", get_time() - philo->st, philo->id);
+				// pthread_mutex_unlock(&philo->args->var);
+				// pthread_mutex_lock(&philo->args->var);
+				// pthread_mutex_unlock(&philo->args->var);
 				return ;
 			}
-			// if (philo[i].count_meals >= args.n_ofmeals)
-			// 	return ;
 			i++;
 		}
+		// if (args->full_philos == args->n_philos)
+		// 	return ;
 	}
 }
 
-void	print_msg(t_philo *philo, char state, t_args *args)
+void	print_msg(t_philo *philo, char *msg)
 {
-	(void)args;
-	if (state == 't' && philo->args->kill == 0)
+	if (philo->args->kill == 0)
 	{
-		// pthread_mutex_lock(&args->msg);
-		printf("%lld %d is thinking\n", get_time() - philo->st, philo->id);
-		// pthread_mutex_unlock(&args->msg);
-	}
-	else if (state == 'F' && philo->args->kill == 0)
-	{
-		pthread_mutex_lock(&philo->fst_fork);
-		// pthread_mutex_lock(&args->msg);
-		printf("%lld %d has taken a fork\n", get_time() - philo->st, philo->id);
-		// pthread_mutex_unlock(&args->msg);
-	}
-	else if (state == 'f' && philo->args->kill == 0)
-	{
-		pthread_mutex_lock(philo->scd_fork);
-		// pthread_mutex_lock(&args->msg);
-		printf("%lld %d has taken a fork\n", get_time() - philo->st, philo->id);
-		// pthread_mutex_unlock(&args->msg);
-	}
-	else if (state == 'e' && philo->args->kill == 0)
-	{
-		// pthread_mutex_lock(&args->msg);
-		printf("%lld %d is eating\n", get_time() - philo->st, philo->id);
-		// pthread_mutex_unlock(&args->msg);
-		// pthread_mutex_lock(&args->time);
-		philo->lt = get_time();
-		// pthread_mutex_unlock(&args->time);
-		philo->count_meals++;
-		custom_usleep(philo->args->t_toeat);
-		pthread_mutex_unlock(&philo->fst_fork);
-		pthread_mutex_unlock(philo->scd_fork);
-	}
-	else if (state == 's' && philo->args->kill == 0
-		&& philo->count_meals < philo->args->n_ofmeals)
-	{
-		// pthread_mutex_lock(&args->msg);
-		printf("%lld %d is sleeping\n", get_time() - philo->st, philo->id);
-		// pthread_mutex_unlock(&args->msg);
-		custom_usleep(philo->args->t_tosleep);
+		pthread_mutex_lock(&philo->args->var);
+		printf("%lld %d %s\n", get_time() - philo->st, philo->id, msg);
+		pthread_mutex_unlock(&philo->args->var);
 	}
 }
 
 void	*routine(void *ptr)
 {
-	t_philo	*ph;
+	t_philo	*philo;
 
-	ph = (t_philo *)ptr;
+	philo = (t_philo *)ptr;
 	while (1)
 	{
-		if (ph->args->kill == 1)
-			break ;
-		print_msg(ph, 't', ph->args);
-		print_msg(ph, 'F', ph->args);
-		print_msg(ph, 'f', ph->args);
-		print_msg(ph, 'e', ph->args);
-		print_msg(ph, 's', ph->args);
-		if ((ph->args->n_ofmeals != -1 && ph->count_meals >= ph->args->n_ofmeals)
-			|| ph->args->kill == 1)
+		print_msg(philo, "is thinking");
+		pthread_mutex_lock(&philo->fst_fork);
+		print_msg(philo, "has taken a fork");
+		pthread_mutex_lock(philo->scd_fork);
+		print_msg(philo, "has taken a fork");
+		print_msg(philo, "is eating");
+		pthread_mutex_lock(&philo->args->var);
+		philo->lt = get_time();
+		pthread_mutex_unlock(&philo->args->var);
+		philo->count_meals++;
+		custom_usleep(philo->args->t_toeat);
+		pthread_mutex_unlock(&philo->fst_fork);
+		pthread_mutex_unlock(philo->scd_fork);
+		print_msg(philo, "is sleeping");
+		custom_usleep(philo->args->t_tosleep);
+		if (philo->args->n_ofmeals != -1
+			&& philo->count_meals >= philo->args->n_ofmeals)
 		{
-			// pthread_mutex_lock(&ph.args.satiation);
-			// printf("before full philos : %d/%d\n", ph.args.full_philos, ph.args.n_philos);
-			// ph.args.full_philos++;
-			// printf("after full philos : %d/%d\n", ph.args.full_philos, ph.args.n_philos);
-			// pthread_mutex_unlock(&ph.args.satiation);
+			pthread_mutex_lock(&philo->args->var);
+			// printf("full : %d/%d\n", philo->args->full_philos, philo->args->n_philos);
+			philo->args->full_philos++;
+			// printf("full : %d/%d\n", philo->args->full_philos, philo->args->n_philos);
+			pthread_mutex_unlock(&philo->args->var);
 			break ;
 		}
+		printf("-->%d\n",philo->args->full_philos);
+		if (philo->args->full_philos == philo->args->n_philos)
+			break ;
+		// else if (philo->args->kill == 1)
+		// 	break ;
 	}
 	return (NULL);
 }
