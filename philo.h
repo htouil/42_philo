@@ -6,7 +6,7 @@
 /*   By: htouil <htouil@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 16:49:08 by htouil            #+#    #+#             */
-/*   Updated: 2023/08/23 13:16:31 by htouil           ###   ########.fr       */
+/*   Updated: 2023/08/24 22:31:59 by htouil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 # include <unistd.h>
 # include <sys/time.h>
 # include <pthread.h>
-# include <stdbool.h>
 
 typedef struct s_args
 {
@@ -28,11 +27,8 @@ typedef struct s_args
 	int				t_toeat;
 	int				t_tosleep;
 	int				n_ofmeals;
-	int				full_philos;
+	int				*full_philos;
 	int				kill;
-	// pthread_mutex_t	satiation;
-	// pthread_mutex_t	time;
-	// pthread_mutex_t	msg;
 	pthread_mutex_t	var;
 }		t_args;
 

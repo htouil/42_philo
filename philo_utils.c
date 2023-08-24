@@ -6,7 +6,7 @@
 /*   By: htouil <htouil@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 15:56:16 by htouil            #+#    #+#             */
-/*   Updated: 2023/08/23 16:50:29 by htouil           ###   ########.fr       */
+/*   Updated: 2023/08/25 00:36:44 by htouil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	custom_usleep(int t_to)
 
 	start = get_time();
 	while (get_time() - start < t_to)
-		usleep(85);
+		usleep(10);
 }
 
 void	monitoring(t_args *args, t_philo *philo)
@@ -54,12 +54,14 @@ void	monitoring(t_args *args, t_philo *philo)
 				// pthread_mutex_unlock(&philo->args->var);
 				// pthread_mutex_lock(&philo->args->var);
 				// pthread_mutex_unlock(&philo->args->var);
+				if (args->n_philos == 1)
+					pthread_mutex_unlock(&philo->fst_fork);
 				return ;
 			}
 			i++;
 		}
-		// if (args->full_philos == args->n_philos)
-		// 	return ;
+		if (!*philo->args->full_philos)
+			return ;
 	}
 }
 
@@ -80,7 +82,6 @@ void	*routine(void *ptr)
 	philo = (t_philo *)ptr;
 	while (1)
 	{
-		print_msg(philo, "is thinking");
 		pthread_mutex_lock(&philo->fst_fork);
 		print_msg(philo, "has taken a fork");
 		pthread_mutex_lock(philo->scd_fork);
@@ -95,21 +96,17 @@ void	*routine(void *ptr)
 		pthread_mutex_unlock(philo->scd_fork);
 		print_msg(philo, "is sleeping");
 		custom_usleep(philo->args->t_tosleep);
+		print_msg(philo, "is thinking");
 		if (philo->args->n_ofmeals != -1
 			&& philo->count_meals >= philo->args->n_ofmeals)
 		{
 			pthread_mutex_lock(&philo->args->var);
-			// printf("full : %d/%d\n", philo->args->full_philos, philo->args->n_philos);
-			philo->args->full_philos++;
-			// printf("full : %d/%d\n", philo->args->full_philos, philo->args->n_philos);
+			*philo->args->full_philos = 0;
 			pthread_mutex_unlock(&philo->args->var);
 			break ;
 		}
-		printf("-->%d\n",philo->args->full_philos);
-		if (philo->args->full_philos == philo->args->n_philos)
+		if (philo->args->kill == 1)
 			break ;
-		// else if (philo->args->kill == 1)
-		// 	break ;
 	}
 	return (NULL);
 }
