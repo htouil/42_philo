@@ -6,7 +6,7 @@
 /*   By: htouil <htouil@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 20:44:09 by htouil            #+#    #+#             */
-/*   Updated: 2023/08/24 23:56:46 by htouil           ###   ########.fr       */
+/*   Updated: 2023/08/27 16:48:56 by htouil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,17 +76,14 @@ void	invite_philosophers(t_args *args, t_philo *philo)
 	long long	begin;
 
 	begin = get_time();
-	i = 0;
-	while (i < args->n_philos)
+	i = -1;
+	while (++i < args->n_philos)
 	{
 		pthread_create(&philo[i].philo, NULL, routine, &philo[i]);
-		philo[i].st = begin;
 		pthread_mutex_lock(&args->var);
+		philo[i].st = begin;
 		philo[i].lt = begin;
 		pthread_mutex_unlock(&args->var);
-		i++;
-		if (philo->id % 2 == 0)
-			usleep(100);
 		usleep(10);
 	}
 }
