@@ -6,20 +6,20 @@
 #    By: htouil <htouil@student.1337.ma>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/10 20:44:55 by htouil            #+#    #+#              #
-#    Updated: 2023/08/29 00:34:30 by htouil           ###   ########.fr        #
+#    Updated: 2023/08/29 16:00:59 by htouil           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	= philo
 
-SRCS	= philo.c philo_utils.c \
+SRCS	= philo.c philo_utils.c philo_utils2.c \
 			ft_bzero.c ft_atoi.c \
 
 OBJS	= $(SRCS:.c=.o)
 
 CC		= cc
 
-FLAGS	= -Wall -Wextra -Werror #-fsanitize=thread -g -pthread
+FLAGS	= -Wall -Wextra -Werror #-fsanitize=thread -g
 
 all: $(NAME)
 

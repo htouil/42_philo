@@ -6,7 +6,7 @@
 /*   By: htouil <htouil@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 16:49:08 by htouil            #+#    #+#             */
-/*   Updated: 2023/08/26 20:42:39 by htouil           ###   ########.fr       */
+/*   Updated: 2023/08/29 15:36:59 by htouil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,9 @@ int			ft_atoi(char *str);
 
 //philo functions;
 long long	get_time(void);
+void		custom_usleep(t_philo *philo, int t_to);
 void		*routine(void *ptr);
 void		monitoring(t_args *args, t_philo *philo);
+void		print_msg(t_philo *philo, char *msg);
 
 #endif
